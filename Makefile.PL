@@ -18,7 +18,7 @@ WriteMakefile(
         my $out = "POD2TEST_EXE = pod2test\n";
 
         $out .= $self->SUPER::top_targets(@_);
-        $out =~ s/^(pure_all\b.*)/$1 testifypods/m;
+       # $out =~ s/^(pure_all\b.*)/$1 testifypods/m;
 
         $out .= "\n\ntestifypods : \n";
         foreach
