@@ -1,14 +1,18 @@
-use ExtUtils::MakeMaker;
+           use inc::Module::Install;
 
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    'NAME'         => 'Class::ReturnValue',
-    'VERSION_FROM' => 'lib/Class/ReturnValue.pm',        # finds $VERSION
-    'PREREQ_PM'    => { 'Devel::StackTrace' => undef,
-    			'Test::More' => undef,
-    			'Test::Inline' => undef },    # e.g., Module::Name => 1.1
-);
+           name('Class-ReturnValue');
+           abstract('A smart return value object');
+           author('Jesse Vincent <jesse@bestpractical.com>');
+	   version_from('lib/Class/ReturnValue.pm');
+           license('perl');
+           include_deps('Test::More', 5.004);
+           include_deps('Test::Inline');
+           requires('Test::More');
+           requires('Test::Inline');
+           requires('Devel::StackTrace');	
+           check_nmake();      # check and download nmake.exe for Win32
+
+
 {
 
     package MY;
@@ -35,4 +39,6 @@ WriteMakefile(
         return $out;
     }
 }
+	&Meta->write;
+           &Makefile->write;
 

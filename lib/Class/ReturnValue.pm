@@ -88,7 +88,7 @@ use Devel::StackTrace;
 use Data::Dumper;
 
 
-$VERSION = '0.51';
+$VERSION = '0.52';
 
 
 use overload 'bool' => \&error_condition;
