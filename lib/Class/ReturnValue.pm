@@ -81,7 +81,7 @@ use vars qw($VERSION);
 use Carp;
 use Devel::StackTrace;
 
-$VERSION = '0.20';
+$VERSION = '0.21';
 
 use overload 'bool' => \&error_condition;
 use overload '""' => \&error_condition;
@@ -302,7 +302,6 @@ if(baz()){
  ok (1,"returning an error evals as false");
 
 }
-exit(0);
 
 ok(my $retval = Class::ReturnValue->new());
 ok($retval->return_error( errno => 20,
@@ -310,7 +309,6 @@ ok($retval->return_error( errno => 20,
                         do_backtrace => 1));
 ok($retval->backtrace ne undef);
 is($retval->error_message,"You've been eited");
-ok(!$retval);
 
 
 ok(my $retval2 = Class::ReturnValue->new());

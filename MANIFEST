@@ -2,4 +2,4 @@ Changes
 MANIFEST
 Makefile.PL
 lib/Class/ReturnValue.pm
-test.pl
+t/test.pl

@@ -21,7 +21,6 @@ WriteMakefile(
         $out =~ s/^(pure_all\b.*)/$1 testifypods/m;
 
         $out .= "\n\ntestifypods : \n";
-
         foreach
           my $pod ( keys %{ $self->{MAN1PODS} }, keys %{ $self->{MAN3PODS} } )
         {
