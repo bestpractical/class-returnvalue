@@ -21,15 +21,15 @@ or  a list (what are the return values)
     sub demo {
         my $value = shift;
         my $ret = Class::ReturnValue->new();
-        $ret->return_array('0', 'No results found');
+        $ret->as_array('0', 'No results found');
     
         unless($value) {
-            $ret->return_error(errno => '1',
+            $ret->as_error(errno => '1',
                                message => "You didn't supply a parameter.",
                                do_backtrace => 1);
         }
 
-        return($ret);
+        return($ret->return_value);
     }
 
     if (demo('foo')){ 
@@ -77,15 +77,26 @@ use Test::More;
 
 # }}}
 
-use vars qw($VERSION);
+use Exporter;
+
+use vars qw/$VERSION @EXPORT/;
+
+@ISA = qw/Exporter/;
+@EXPORT = qw /&return_value/;
 use Carp;
 use Devel::StackTrace;
+use Data::Dumper;
 
-$VERSION = '0.22';
+
+$VERSION = '0.40';
+
 
 use overload 'bool' => \&error_condition;
 use overload '""' => \&error_condition;
 use overload 'eq' => \&my_eq;
+use overload '@{}' => \&as_array;
+use overload 'fallback' => \&as_array;
+
 
 =head1 METHODS 
 
@@ -111,55 +122,82 @@ sub my_eq {
     }    
 }
 
-
 =item as_array
 
-Return the 'return_array' attribute of this object as an array.
+Return the 'as_array' attribute of this object as an array.
 
 =begin testing 
 
 sub foo {
     my $r = Class::ReturnValue->new();
-    $r->return_array('one', 'two',  'three');
-    return $r;
+    $r->as_array('one', 'two',  'three');
+   return $r->return_value();
+   
+   
+   
 }
 
 my @array;
 ok(@array = foo());
 is($array[0] , 'one','dereferencing to an array is ok');
+is($array[1] , 'two','dereferencing to an array is ok');
+is($array[2] , 'three','dereferencing to an array is ok');
+is($array[3] , undef ,'dereferencing to an array is ok');
 
 ok(my $ref = foo());
 ok(my @array2 = $ref->as_array());
-is($array2[0] , 'one','dereferencing to an array is ok');
+is($array2[0] , 'one','dereferencing to an arrayref is ok');
 
+is($array2[1] , 'two','dereferencing to an arrayref is ok');
+is($array2[2] , 'three','dereferencing to an arrayref is ok');
+is($array2[3] , undef ,'dereferencing to an arrayref is ok');
 ok(foo(),"Foo returns true in a boolean context");
+
+my ($a, $b, $c) = foo();
+is ($a , 'one', "first element is 1");
+is ($b, 'two' , "Second element is two");
+is ($c , 'three', "Third element is three");
+
+my ($a2, $b2, $c2) = foo();
+is ($a2 , 'one', "first element is 1");
+is ($b2, 'two' , "Second element is two");
+is ($c2 , 'three', "Third element is three");
+
+=end testing
+
+=cut
+
+
+=item as_array [ARRAY]
+
+If $self is called in an array context, returns the array specified in ARRAY
+
+=begin testing
+
+sub bing {
+    my $ret = Class::ReturnValue->new();
+    return $ret->return_value;
+    return("Dead");
+}
+
+ok(bing());
+ok(bing() ne 'Dead');
 
 =end testing
 
 =cut
 
 sub as_array {
+
     my $self = shift;
-    return(@{$self->{'return_array'}});
+    if (@_) { 
+        @{$self->{'as_array'}} = (@_);
+    }
+    return(@{$self->{'as_array'}});
 }
 
 
-
-=item return_array ARRAY
-
-If $self is called in an array context, returns the array specified in ARRAY
-
-=cut
-
-sub return_array {
-
-    my $self = shift;
-    @{$self->{'return_array'}} = @_;
-
-}
-
-
-=item return_error HASH
+=item as_error HASH
 
 Turns this return-value object into  an error return object.  TAkes three parameters:
 
@@ -205,7 +243,7 @@ Turns this return-value object into  an error return object.  TAkes three parame
 
 =cut
 
-sub return_error {
+sub as_error {
     my $self = shift;
     my %args = ( errno => undef,
                  message => undef,
@@ -213,7 +251,7 @@ sub return_error {
                  @_);
 
     unless($args{'errno'}) {
-        carp "$self -> return_error called without an 'errno' parameter";
+        carp "$self -> as_error called without an 'errno' parameter";
         return (undef);
     }
 
@@ -286,14 +324,14 @@ sub backtrace {
 
 sub bar {
     my $retval3 = Class::ReturnValue->new();
-    $retval3->return_array(1,'asq');
-    return $retval3;
+    $retval3->as_array(1,'asq');
+   return_value $retval3;
 }
 ok(bar());
 sub baz {
     my $retval = Class::ReturnValue->new();
-    $retval->return_error(errno=> 1);
-    return $retval;
+    $retval->as_error(errno=> 1);
+   return_value  $retval;
 }
 
 if(baz()){
@@ -304,7 +342,7 @@ if(baz()){
 }
 
 ok(my $retval = Class::ReturnValue->new());
-ok($retval->return_error( errno => 20,
+ok($retval->as_error( errno => 20,
                         message => "You've been eited",
                         do_backtrace => 1));
 ok($retval->backtrace ne undef);
@@ -312,7 +350,7 @@ is($retval->error_message,"You've been eited");
 
 
 ok(my $retval2 = Class::ReturnValue->new());
-ok($retval2->return_error( errno => 1,
+ok($retval2->as_error( errno => 1,
                             message => "You've been eited",
                              do_backtrace => 0 ));
 ok($retval2->backtrace eq undef);
@@ -335,12 +373,23 @@ sub error_condition {
             return (0);
         }
         elsif (wantarray()) {
-            return(@{$self->{'return_array'}});
+            return(@{$self->{'as_array'}});
         }
        else { 
             return(1);
        }     
 }
+
+sub return_value {
+    my $self = shift;
+    if (wantarray) {
+         return ($self->as_array);
+    }
+    else {
+       return ($self);
+    }
+}
+
 
 =head1 AUTHOR
     
