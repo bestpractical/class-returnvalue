@@ -1,5 +1,8 @@
 Revision history for Perl extension Return::Value.
 
+ 0.22  Wed Aug 14 21:02:18 EDT 2002
+        - Fixing dependency list
+
  0.21  Fri Jul  5 23:49:23 EDT 2002
         - Fixing test suite bugs.
 

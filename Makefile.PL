@@ -5,9 +5,9 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'         => 'Class::ReturnValue',
     'VERSION_FROM' => 'lib/Class/ReturnValue.pm',        # finds $VERSION
-    'PREREQ_PM'    => { Devel::StackTrace => undef,
-    			Test::More =>undef,
-    			Test::Inline => undef },    # e.g., Module::Name => 1.1
+    'PREREQ_PM'    => { 'Devel::StackTrace' => undef,
+    			'Test::More' => undef,
+    			'Test::Inline' => undef },    # e.g., Module::Name => 1.1
 );
 {
 

@@ -81,7 +81,7 @@ use vars qw($VERSION);
 use Carp;
 use Devel::StackTrace;
 
-$VERSION = '0.21';
+$VERSION = '0.22';
 
 use overload 'bool' => \&error_condition;
 use overload '""' => \&error_condition;
