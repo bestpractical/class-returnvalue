@@ -1,6 +1,11 @@
 Revision history for Perl extension Return::Value.
+ 0.20  Fri Jul  5 17:49:23 EDT 2002
+        - Depend on Devel::StackTrace
+        - Add a couple new accessors
+        - Fixed a crashing bug on 5.6.1 which toasted when evaluating as a boolean
 
-0.01  Fri Jan 18 14:21:03 2002
+
+ 0.01  Fri Jan 18 14:21:03 2002
 	- original version; created by h2xs 1.1.1.4 with options
 		-X -A -n Return::Value
 

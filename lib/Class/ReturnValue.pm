@@ -71,6 +71,7 @@ or  a list (what are the return values)
 
 =for testing
 use Class::ReturnValue;
+use Test::More;
 
 =cut
 
@@ -78,10 +79,12 @@ use Class::ReturnValue;
 
 use vars qw($VERSION);
 use Carp;
+use Devel::StackTrace;
 
-$VERSION = '0.11';
+$VERSION = '0.20';
 
 use overload 'bool' => \&error_condition;
+use overload '""' => \&error_condition;
 use overload 'eq' => \&my_eq;
 
 =head1 METHODS 
@@ -129,6 +132,8 @@ ok(my $ref = foo());
 ok(my @array2 = $ref->as_array());
 is($array2[0] , 'one','dereferencing to an array is ok');
 
+ok(foo(),"Foo returns true in a boolean context");
+
 =end testing
 
 =cut
@@ -169,7 +174,7 @@ Turns this return-value object into  an error return object.  TAkes three parame
 
     errno and message default to undef. errno _must_ be specified. 
     It's a numeric error number.  Any true integer value  will cause the 
-    object to evaluate to undef in a scalar context. At first, this may look a 
+    object to evaluate to false in a scalar context. At first, this may look a 
     bit counterintuitive, but it means that you can have error codes and still 
     allow simple use of your functions in a style like this:
 
@@ -216,7 +221,9 @@ sub return_error {
     $self->{'error_message'} = $args{'message'};
     if ($args{'do_backtrace'}) {
         # Use carp's internal backtrace methods, rather than duplicating them ourselves
-        $self->{'backtrace'} = Carp::longmess();
+         my $trace = Devel::StackTrace->new(ignore_package => 'Class::ReturnValue');
+
+        $self->{'backtrace'} = $trace->as_string; # like carp
     }
 
     return(1);
@@ -240,6 +247,23 @@ sub errno {
 }
 
 
+=item error_message
+
+If there's been an error return the error message.
+
+=cut
+
+sub error_message {
+    my $self = shift;
+    if ($self->{'error_message'}) {
+        return($self->{'error_message'});
+    }
+    else {
+        return(undef);
+    }
+}
+
+
 =item backtrace
 
 If there's been an error and we asked for a backtrace, return the backtrace. 
@@ -259,11 +283,35 @@ sub backtrace {
 
 =begin testing
 
+
+sub bar {
+    my $retval3 = Class::ReturnValue->new();
+    $retval3->return_array(1,'asq');
+    return $retval3;
+}
+ok(bar());
+sub baz {
+    my $retval = Class::ReturnValue->new();
+    $retval->return_error(errno=> 1);
+    return $retval;
+}
+
+if(baz()){
+ ok (0,"returning an error evals as true");
+} else {
+ ok (1,"returning an error evals as false");
+
+}
+exit(0);
+
 ok(my $retval = Class::ReturnValue->new());
 ok($retval->return_error( errno => 20,
                         message => "You've been eited",
                         do_backtrace => 1));
 ok($retval->backtrace ne undef);
+is($retval->error_message,"You've been eited");
+ok(!$retval);
+
 
 ok(my $retval2 = Class::ReturnValue->new());
 ok($retval2->return_error( errno => 1,
@@ -286,7 +334,7 @@ If there's been an error, return undef. Otherwise return 1
 sub error_condition { 
     my $self = shift;
     if ($self->{'errno'}) {
-            return (undef);
+            return (0);
         }
         elsif (wantarray()) {
             return(@{$self->{'return_array'}});
