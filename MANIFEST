@@ -3,3 +3,4 @@ MANIFEST
 Makefile.PL
 lib/Class/ReturnValue.pm
 t/test.pl
+t/embedded-Class-ReturnValue.t
