@@ -1,5 +1,7 @@
 Revision history for Perl extension Return::Value.
 
+ 0.53  Mon May 30 16:52:44 EDT 2005
+        - sub error_condition returns undef, not 0 -- Thanks to Dave Glasser
 
  0.52  Oct 08, 2003
 	- Ported to Module::Install

@@ -370,7 +370,7 @@ If there's been an error, return undef. Otherwise return 1
 sub error_condition { 
     my $self = shift;
     if ($self->{'errno'}) {
-            return (0);
+            return (undef);
         }
         elsif (wantarray()) {
             return(@{$self->{'as_array'}});
