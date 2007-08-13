@@ -1,5 +1,8 @@
 Revision history for Perl extension Return::Value.
 
+ 0.54 Mon Aug 13 17:18:51 EDT 2007
+    - Ditched Test::Inline like a lead brick.
+
  0.53  Mon May 30 16:52:44 EDT 2005
         - sub error_condition returns undef, not 0 -- Thanks to Dave Glasser
 

@@ -1,50 +1,8 @@
 #!perl -w
 
-use Test::More 'no_plan';
+use Test::More tests => 32;
 
-package Catch;
-
-sub TIEHANDLE {
-    my($class, $var) = @_;
-    return bless { var => $var }, $class;
-}
-
-sub PRINT  {
-    my($self) = shift;
-    ${'main::'.$self->{var}} .= join '', @_;
-}
-
-sub OPEN  {}    # XXX Hackery in case the user redirects
-sub CLOSE {}    # XXX STDERR/STDOUT.  This is not the behavior we want.
-
-sub READ {}
-sub READLINE {}
-sub GETC {}
-
-my $Original_File = 'lib/Class/ReturnValue.pm';
-
-package main;
-
-# pre-5.8.0's warns aren't caught by a tied STDERR.
-$SIG{__WARN__} = sub { $main::_STDERR_ .= join '', @_; };
-tie *STDOUT, 'Catch', '_STDOUT_' or die $!;
-tie *STDERR, 'Catch', '_STDERR_' or die $!;
-
-{
-    undef $main::_STDOUT_;
-    undef $main::_STDERR_;
-#line 73 lib/Class/ReturnValue.pm
-use Class::ReturnValue;
-use Test::More;
-
-    undef $main::_STDOUT_;
-    undef $main::_STDERR_;
-}
-
-{
-    undef $main::_STDOUT_;
-    undef $main::_STDERR_;
-#line 130 lib/Class/ReturnValue.pm
+use_ok( Class::ReturnValue);
 
 sub foo {
     my $r = Class::ReturnValue->new();
@@ -82,15 +40,6 @@ is ($b2, 'two' , "Second element is two");
 is ($c2 , 'three', "Third element is three");
 
 
-    undef $main::_STDOUT_;
-    undef $main::_STDERR_;
-}
-
-{
-    undef $main::_STDOUT_;
-    undef $main::_STDERR_;
-#line 176 lib/Class/ReturnValue.pm
-
 sub bing {
     my $ret = Class::ReturnValue->new();
     return $ret->return_value;
@@ -100,15 +49,6 @@ sub bing {
 ok(bing());
 ok(bing() ne 'Dead');
 
-
-    undef $main::_STDOUT_;
-    undef $main::_STDERR_;
-}
-
-{
-    undef $main::_STDOUT_;
-    undef $main::_STDERR_;
-#line 323 lib/Class/ReturnValue.pm
 
 
 sub bar {
@@ -134,7 +74,7 @@ ok(my $retval = Class::ReturnValue->new());
 ok($retval->as_error( errno => 20,
                         message => "You've been eited",
                         do_backtrace => 1));
-ok($retval->backtrace ne undef);
+like($retval->backtrace, qr{Trace begun at t/basic.t line});
 is($retval->error_message,"You've been eited");
 
 
@@ -142,12 +82,8 @@ ok(my $retval2 = Class::ReturnValue->new());
 ok($retval2->as_error( errno => 1,
                             message => "You've been eited",
                              do_backtrace => 0 ));
-ok($retval2->backtrace eq undef);
+is($retval2->backtrace ,undef);
 is($retval2->errno, 1, "Got the errno");
 isnt($retval2->errno,20, "Errno knows that 20 != 1");
 
-
-    undef $main::_STDOUT_;
-    undef $main::_STDERR_;
-}
-
+1;
