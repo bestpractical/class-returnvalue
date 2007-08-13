@@ -15,4 +15,4 @@ no_index:
 requires: 
   Devel::StackTrace: 0
   Test::More: 0
-version: undef
+version: 0.54

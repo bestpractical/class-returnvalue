@@ -1,12 +1,12 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.35.
+signed via the Module::Signature module, version 0.55.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
 
     % cpansign -v
 
-It would check each file's integrity, as well as the signature's
+It will check each file's integrity, as well as the signature's
 validity.  If "==> Signature verified OK! <==" is not displayed,
 the distribution may already have been compromised, and you should
 not run its Makefile.PL or Build.PL.
@@ -14,29 +14,25 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 efd664fb212d3dd60651fc5be8a0c73aabc4746d Changes
-SHA1 e06b8d9a55f965cd4427f24931ff9c3a08c04ac9 MANIFEST
+SHA1 aad97a5c87efb4ba11b8e393ac2aec1512c58ff9 Changes
+SHA1 a7f95f8412eccd336490d962c83b0ac5f3f8dffc MANIFEST
 SHA1 4569b321148f7fbc4c6ac1b2fa0db2b430fdec34 MANIFEST.SKIP
-SHA1 e4ec7f27c1dea6aa535a6d1eaee71966a1db97f0 META.yml
-SHA1 eeafb4c5e01576e377bf8e069e08209e75081689 Makefile.PL
-SHA1 f9569c4340d4105598a318f7c736e2a10108347e inc/Module/Install.pm
-SHA1 adfe7bd31491c5499b508340aa6d1af75b39160e inc/Module/Install/Base.pm
-SHA1 c5e4dd819a1bd9613e95a47ace2a4558f32eef53 inc/Module/Install/Can.pm
-SHA1 fc88b7b683e3f0527b05ee500ee41eb379df1432 inc/Module/Install/Fetch.pm
-SHA1 1a1269cea863bf5a9a4446034e4353002fd29d98 inc/Module/Install/Include.pm
-SHA1 107ac73515efc2b423994623342b4f7faf898000 inc/Module/Install/Makefile.pm
-SHA1 02a89263781b0a3364d09c3c8f2bafb83f1f4549 inc/Module/Install/Metadata.pm
-SHA1 eb3a15cf26737881d10b02c51d5074cc9fe10443 inc/Module/Install/Win32.pm
-SHA1 cfdbe8918158c2f562661cbbed3888e37f8a4c22 inc/Test/Builder.pm
-SHA1 eaf48bc02c21d258a46dee904fc74bbf6ed7db7b inc/Test/Inline.pm
-SHA1 8103929b0ee190d2f99bdb020221ce2f7de5c08e inc/Test/More.pm
-SHA1 833273daabbd62eddf0f64076fd4389d69a78197 lib/Class/ReturnValue.pm
-SHA1 155549e6689decabf90abc4283f737bc356d933b t/embedded-Class-ReturnValue.t
-SHA1 b063c38d2d3be785585c1e0d0d12e66bb790889c t/test.pl
+SHA1 df119d05a7fab9d1de99796dca1dc078c761d968 META.yml
+SHA1 829a1b694477d4ff77630b5f851b3041f61e23bf Makefile.PL
+SHA1 78edb89a439463e44c33a72bbee84c54d0dc8aaf inc/Module/Install.pm
+SHA1 8ea4e37df83fd0c1c050be5c8da75545c3828d9b inc/Module/Install/Base.pm
+SHA1 1da6031583c32f0d1ec073b8376102fc51427dcc inc/Module/Install/Can.pm
+SHA1 b779375b90c16af2f31f38a1dd2b5df223c7f2fb inc/Module/Install/Fetch.pm
+SHA1 2054450e1e9c1dd8056362bf4a64ae70d5d71476 inc/Module/Install/Makefile.pm
+SHA1 5d6189b2cad15cf9932a28faafd55130c8247e83 inc/Module/Install/Metadata.pm
+SHA1 02af973fae2ac3531fa6b704574b2b8cb2a08148 inc/Module/Install/Win32.pm
+SHA1 3a2eab96e91cca8d99938cda7791759ae9d97b3a inc/Module/Install/WriteAll.pm
+SHA1 4f444f6b43befc6276c289dbecfc24e574dc3a86 lib/Class/ReturnValue.pm
+SHA1 91cfdf144a479deffcbd68363d3a205b28040559 t/basic.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (Darwin)
+Version: GnuPG v1.4.3 (Darwin)
 
-iD8DBQE/hAGLQaM/s3DrrJARAjdUAJ9G+gNvdiUwepVJIOl7Nd2lbP7WHgCg3nyc
-mTDM2KRlmSxc0pCzWRdgpkQ=
-=jrFq
+iD8DBQFGwMyPEi9d9xCOQEYRArq+AKCKrH92oIHpFXN0tTNzEU+sTFfniQCeKlNU
+f1XQ0g38yWeC8Jj8OsnMjbo=
+=6Xr5
 -----END PGP SIGNATURE-----
