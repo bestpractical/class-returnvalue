@@ -74,7 +74,7 @@ ok(my $retval = Class::ReturnValue->new());
 ok($retval->as_error( errno => 20,
                         message => "You've been eited",
                         do_backtrace => 1));
-like($retval->backtrace, qr{Trace begun at t/basic.t line});
+like($retval->backtrace, qr{Trace begun at t[\\/]basic.t line});
 is($retval->error_message,"You've been eited");
 
 
