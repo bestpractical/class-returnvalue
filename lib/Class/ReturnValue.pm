@@ -6,15 +6,13 @@ package Class::ReturnValue;
 
 =head1 NAME
 
-Class::ReturnValue - A return-value object that lets you treat it 
-as as a boolean, array or object
+Class::ReturnValue - A return-value object that lets you treat it as as a boolean, array or object
 
 =head1 DESCRIPTION
 
 Class::ReturnValue is a "clever" return value object that can allow
-code calling your routine to expect:
-    a boolean value (did it fail)
-or  a list (what are the return values)
+code calling your routine to expect: a boolean value (did it fail)
+or a list (what are the return values)
 
 =head1 EXAMPLE
 
@@ -22,7 +20,7 @@ or  a list (what are the return values)
         my $value = shift;
         my $ret = Class::ReturnValue->new();
         $ret->as_array('0', 'No results found');
-    
+
         unless($value) {
             $ret->as_error(errno => '1',
                                message => "You didn't supply a parameter.",
@@ -94,7 +92,7 @@ use overload 'fallback' => \&as_array;
 
 =head1 METHODS 
 
-=item new
+=head2 new
 
 Instantiate a new Class::ReturnValue object
 
@@ -116,14 +114,14 @@ sub my_eq {
     }    
 }
 
-=item as_array
+=head2 as_array
 
 Return the 'as_array' attribute of this object as an array.
 
 =cut
 
 
-=item as_array [ARRAY]
+=head2 as_array [ARRAY]
 
 If $self is called in an array context, returns the array specified in ARRAY
 
@@ -139,9 +137,9 @@ sub as_array {
 }
 
 
-=item as_error HASH
+=head2 as_error HASH
 
-Turns this return-value object into  an error return object.  TAkes three parameters:
+Turns this return-value object into an error return object. Takes three parameters:
 
     message
     do_backtrace
@@ -169,7 +167,7 @@ Turns this return-value object into  an error return object.  TAkes three parame
         as well as more complex use like this:
 
         my $retval = $obj->do_something;
-        
+
         if ($retval) {
             print "Yay. we did something\n";
             my ($foo, $bar, $baz) = @{$retval};
@@ -181,7 +179,6 @@ Turns this return-value object into  an error return object.  TAkes three parame
                 die  $retval->backtrace; # Die and print out a backtrace 
             }
         }
-    
 
 =cut
 
@@ -210,7 +207,7 @@ sub as_error {
 }
 
 
-=item errno 
+=head2 errno 
 
 Returns the errno if there's been an error. Otherwise, return undef
 
@@ -227,7 +224,7 @@ sub errno {
 }
 
 
-=item error_message
+=head2 error_message
 
 If there's been an error return the error message.
 
@@ -244,7 +241,7 @@ sub error_message {
 }
 
 
-=item backtrace
+=head2 backtrace
 
 If there's been an error and we asked for a backtrace, return the backtrace. 
 Otherwise, return undef.
@@ -263,7 +260,7 @@ sub backtrace {
 
 =cut
 
-=item error_condition
+=head2 error_condition
 
 If there's been an error, return undef. Otherwise return 1
 
@@ -294,36 +291,33 @@ sub return_value {
 
 
 =head1 AUTHOR
-    
-    Jesse Vincent <jesse@bestpractical.com>
+
+Jesse Vincent E<lt>jesse@bestpractical.comE<gt>
 
 =head1 BUGS
 
-    This module has, as yet, not been used in production code. I thing
-    it should work, but have never benchmarked it. I have not yet used
-    it extensively, though I do plan to in the not-too-distant future.
-    If you have questions or comments,  please write me.
+If you have questions or comments,  please write me.
 
-    If you need to report a bug, please send mail to 
-    <bug-class-returnvalue@rt.cpan.org> or report your error on the web
-    at http://rt.cpan.org/
+If you need to report a bug, please send mail to 
+<bug-class-returnvalue@rt.cpan.org> or report your error on the web
+at http://rt.cpan.org/
 
 =head1 COPYRIGHT
 
-    Copyright (c) 2002,2003,2005,2007 Jesse Vincent <jesse@bestpractical.com>
+    Copyright (c) 2002-2008 Jesse Vincent <jesse@bestpractical.com>
     You may use, modify, fold, spindle or mutilate this module under
     the same terms as perl itself.
 
 =head1 SEE ALSO
 
-    Class::ReturnValue isn't an exception handler. If it doesn't
-    do what you want, you might want look at one of the exception handlers
-    below:
+Class::ReturnValue isn't an exception handler. If it doesn't
+do what you want, you might want look at one of the exception handlers
+below:
 
-    Error, Exception, Exceptions, Exceptions::Class
+L<Error>, L<Exception>, L<Exceptions>, L<Exceptions::Class>
 
-    You might also want to look at Contextual::Return, another implementation
-    of the same concept as this module.
+You might also want to look at L<Contextual::Return> and L<Return::Value>
+another implementations of the same concept as this module.
 
 =cut
 
